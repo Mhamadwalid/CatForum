@@ -1,0 +1,37 @@
+﻿@model CatForum.Models.Post
+
+@{
+    ViewData["Title"] = "Delete Post"; // Sets the page title dynamically
+}
+
+<h2>Delete Post</h2>
+<hr />
+
+<!-- Card component to display post details before deletion -->
+<div class="card mb-3">
+    <div class="card-header bg-danger text-white">
+        <h5>@Model.Title</h5> <!-- Displays the post title -->
+    </div>
+    <div class="card-body">
+        <p>@Model.Body</p> <!-- Displays the post content -->
+        @if (!string.IsNullOrEmpty(Model.ImageFileName)) // Checks if the post has an associated image
+        {
+            <img src="@Url.Content("~/catimages/" + Model.ImageFileName)" class="img-fluid rounded" />
+            <!-- Displays the post image if available -->
+        }
+    </div>
+</div>
+
+<p>Are you sure you want to delete this post? This action cannot be undone.</p>
+
+<!-- Form to confirm post deletion -->
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="PostId" value="@Model.PostId" />
+    <!-- Hidden field to send the PostId to the server for deletion -->
+
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <!-- Delete button to confirm deletion -->
+
+    <a asp-action="Details" asp-controller="Home" asp-route-id="@Model.PostId" class="btn btn-secondary">Cancel</a>
+    <!-- Cancel button redirects back to the post details -->
+</form>

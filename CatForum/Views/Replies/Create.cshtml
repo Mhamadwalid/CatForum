@@ -1,0 +1,39 @@
+﻿@model CatForum.Models.Reply
+
+@{
+    // Set the title of the page in the browser and heading
+    ViewData["Title"] = "Add Reply";
+}
+
+<h2>Leave a Reply</h2>
+<hr />
+
+<!-- Form to submit a reply to a post -->
+<form asp-action="Create" method="post">
+    <!-- Hidden field to store the PostId, ensuring the reply is linked to the correct post -->
+    <input type="hidden" name="PostId" value="@ViewData["PostId"]" />
+
+    <!-- Display validation errors if any exist -->
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <!-- Label for the reply text input -->
+        <label asp-for="Text" class="form-label"></label>
+
+        <!-- Text area where users can type their reply -->
+        <textarea asp-for="Text" class="form-control" rows="4"></textarea>
+
+        <!-- Validation message for the reply field (shows if the input is invalid) -->
+        <span asp-validation-for="Text" class="text-danger"></span>
+    </div>
+
+    <!-- Submit button for posting the reply -->
+    <button type="submit" class="btn btn-success">Post Reply</button>
+</form>
+
+@section Scripts {
+    @{
+        // Load client-side validation scripts for handling form validation dynamically
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

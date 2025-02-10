@@ -1,0 +1,32 @@
+﻿@model CatForum.Models.Reply
+@{
+    ViewData["Title"] = "Delete Reply"; // Sets the page title in the browser/tab
+}
+
+<h2>Delete Reply</h2>
+<hr />
+
+<!-- Display the reply inside a card layout for better UI -->
+<div class="card mb-3">
+    <div class="card-body">
+        <!-- Show when the reply was created -->
+        <p class="text-muted">Reply posted on @Model.CreatedAt.ToString("MMM dd yyyy")</p>
+        <!-- Show the actual reply text -->
+        <p>@Model.Text</p>
+    </div>
+</div>
+
+<!-- Warning message before deleting -->
+<p>Are you sure you want to delete this reply? This action cannot be undone.</p>
+
+<!-- Form to confirm deletion -->
+<form asp-action="Delete" method="post">
+    <!-- Pass the ReplyId as a hidden input to identify which reply to delete -->
+    <input type="hidden" name="ReplyId" value="@Model.ReplyId" />
+
+    <!-- Delete button styled as a danger (red) button -->
+    <button type="submit" class="btn btn-danger">Delete</button>
+
+    <!-- Cancel button to return to the post details page instead of deleting -->
+    <a asp-action="Details" asp-controller="Home" asp-route-id="@Model.PostId" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,47 @@
+﻿@model CatForum.Models.Post
+
+@{
+    // Set the page title for the browser tab and heading
+    ViewData["Title"] = "New Post";
+}
+
+<h1>Create a New Post</h1>
+<hr />
+
+<!-- Form to create a new post, using POST method and supporting file uploads -->
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+
+    <!-- Display validation errors if any exist -->
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- Input field for the post title -->
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label> <!-- Label for accessibility -->
+        <input asp-for="Title" class="form-control" /> <!-- User enters the title here -->
+        <span asp-validation-for="Title" class="text-danger"></span> <!-- Displays validation messages -->
+    </div>
+
+    <!-- Input field for the post body (text content) -->
+    <div class="mb-3">
+        <label asp-for="Body" class="form-label"></label> <!-- Label for accessibility -->
+        <textarea asp-for="Body" class="form-control" rows="5"></textarea> <!-- Text area for longer input -->
+        <span asp-validation-for="Body" class="text-danger"></span> <!-- Displays validation messages -->
+    </div>
+
+    <!-- Input field for uploading an image (optional) -->
+    <div class="mb-3">
+        <label asp-for="ImageUpload" class="form-label"></label> <!-- Label for accessibility -->
+        <input asp-for="ImageUpload" type="file" class="form-control" /> <!-- File input for images -->
+        <span asp-validation-for="ImageUpload" class="text-danger"></span> <!-- Displays validation messages -->
+    </div>
+
+    <!-- Submit button to create the post -->
+    <button type="submit" class="btn btn-primary">Submit Post</button>
+</form>
+
+<!-- Scripts section for validation (ensures client-side validation works) -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

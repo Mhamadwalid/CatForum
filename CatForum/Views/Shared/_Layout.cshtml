@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding for proper text display -->
+    <meta charset="utf-8" />
+
+    <!-- Ensures responsiveness on different devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Sets the page title dynamically based on the ViewData dictionary -->
+    <title>@ViewData["Title"] - CatForum</title>
+
+    <!-- Link to Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Custom site-wide stylesheet -->
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <!-- Navigation bar with Bootstrap styling -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <!-- Brand name linked to the home page -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">CatForum</a>
+
+                <!-- Toggler button for mobile view -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Collapsible menu items -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Home link -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        <!-- Link to create a new post -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Posts" asp-action="Create">New Post</a>
+                        </li>
+
+                        <!-- Privacy policy page -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main content container where different views will be injected -->
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+
+    <!-- Footer section -->
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <div class="container">
+            <!-- Dynamic copyright year -->
+            <p>&copy; @DateTime.Now.Year CatForum. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery library for JavaScript functionalities -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JS bundle for interactive components -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional scripts section that can be overridden in views -->
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
