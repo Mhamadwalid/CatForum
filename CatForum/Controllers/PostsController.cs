@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using CatForum.Data;
 using CatForum.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CatForum.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly CatForumContext _context;
@@ -28,40 +31,42 @@ namespace CatForum.Controllers
         // POST: /Posts/Create
         // Handles form submission for creating a new post
         [HttpPost]
-        [ValidateAntiForgeryToken] 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PostId,Title,Body,ImageUpload")] Post post)
         {
-            if (ModelState.IsValid) // Ensure submitted data is valid
+            if (ModelState.IsValid)
             {
-                post.CreatedAt = DateTime.Now; // Set the current timestamp for post creation
+                post.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                // If the user uploaded an image, generate a unique file name
+                post.CreatedAt = DateTime.Now; // Set post creation timestamp
+
                 if (post.ImageUpload != null)
                 {
                     string uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(post.ImageUpload.FileName);
-                    post.ImageFileName = uniqueName; // Store the generated file name in the post model
-                }
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/profilepics");
 
-                // Add the new post to the database
-                _context.Add(post);
-                await _context.SaveChangesAsync();
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
 
-                // If an image was uploaded, save it to the server
-                if (post.ImageUpload != null)
-                {
-                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "catimages", post.ImageFileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await post.ImageUpload.CopyToAsync(stream); // Copy image data to the file
+                        await post.ImageUpload.CopyToAsync(stream);
                     }
+
+                    post.ImageFileName = uniqueName;
                 }
 
-                return RedirectToAction("Index", "Home"); // Redirect to the home page after successful post creation
+                _context.Add(post);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
             }
 
-            // If validation fails, return the form with entered data
-            return View(post);
+            return View(post); // If validation fails, return to the form
         }
+
 
         // GET: /Posts/Delete/5
         // Displays a confirmation page before deleting a post
@@ -110,5 +115,7 @@ namespace CatForum.Controllers
 
             return NotFound(); // If post was not found, return a 404 response
         }
+
+
     }
 }

@@ -32,5 +32,12 @@ namespace CatForum.Models
 
         // Collection to hold replies associated with this post (optional)
         public ICollection<Reply>? Replies { get; set; }
+
+        // Ensure ApplicationUserId is a string
+        public string? UserId { get; set; } 
+
+        [ForeignKey("UserId")]
+        public ApplicationUser? ApplicationUser { get; set; }
+
     }
 }

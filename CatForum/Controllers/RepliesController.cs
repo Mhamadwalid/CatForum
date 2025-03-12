@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using CatForum.Data;
 using CatForum.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CatForum.Controllers
 {
+    [Authorize]
     public class RepliesController : Controller
     {
         private readonly CatForumContext _context;

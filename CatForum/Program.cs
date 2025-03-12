@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using CatForum.Data;
+using CatForum.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddControllersWithViews(); // Enables MVC pattern with controll
 // Configure Entity Framework Core to use SQL Server with a connection string from appsettings.json
 builder.Services.AddDbContext<CatForumContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CatForumContext")));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<CatForumContext>();
 
 var app = builder.Build(); // Build the application with the configured services
 
@@ -26,11 +31,15 @@ app.UseStaticFiles();
 
 app.UseRouting(); // Enable routing, allowing requests to reach the correct controller/action
 
-app.UseAuthorization(); // Enforce authentication and authorization rules if implemented
+
+// Enable authentication and authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Define the default routing pattern for controllers
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"); // Default route: HomeController -> Index action
+app.MapRazorPages(); // Required for Identity UI
 
 app.Run(); // Start handling requests

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +24,12 @@ namespace CatForum.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _context.Posts
-                .Include(p => p.Replies) // Include replies for each post
-                .OrderByDescending(p => p.CreatedAt) // Sort posts from newest to oldest
+                .Include(p => p.ApplicationUser) // ✅ Corrected
+                .Include(p => p.Replies)
+                .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
 
-            return View(posts); // Pass the list of posts to the view
+            return View(posts);
         }
 
         // GET: /Home/Details/5
@@ -54,5 +55,20 @@ namespace CatForum.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Profile(string id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var user = await _context.Users
+                .Include(u => u.Posts)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+                return NotFound();
+
+            return View(user);
+        }
+
     }
 }

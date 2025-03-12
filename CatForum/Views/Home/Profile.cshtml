@@ -1,0 +1,40 @@
+﻿@model ApplicationUser
+
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <h2 class="text-primary text-center">@Model.Name's Profile</h2>
+
+        <!-- Profile Image Centered -->
+        <div class="text-center">
+            <img src="@(!string.IsNullOrEmpty(Model.ImageFilename) ? Url.Content("~/profilepics/" + Model.ImageFilename) : Url.Content("~/images/default-profile.png"))"
+                 class="rounded-circle img-fluid border shadow-lg mb-3"
+                 style="width: 150px; height: 150px; object-fit: cover;"
+                 alt="User Profile Picture">
+        </div>
+
+        <!-- Location -->
+        <p class="text-muted text-center">
+            <strong>Location:</strong> @Model.Location
+        </p>
+
+        <!-- User's Discussions -->
+        <h3 class="mt-4">My Discussions</h3>
+        @if (Model.Posts != null && Model.Posts.Any())
+        {
+            <ul class="list-group">
+                @foreach (var post in Model.Posts)
+                {
+                    <li class="list-group-item">
+                        <a asp-controller="Home" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
+                            @post.Title
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">No discussions yet.</p>
+        }
+    </div>
+</div>
