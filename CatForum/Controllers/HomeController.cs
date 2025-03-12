@@ -24,7 +24,7 @@ namespace CatForum.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _context.Posts
-                .Include(p => p.ApplicationUser) // ✅ Corrected
+                .Include(p => p.ApplicationUser) 
                 .Include(p => p.Replies)
                 .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
