@@ -23,23 +23,21 @@
 
     <!-- Input field for the post body (text content) -->
     <div class="mb-3">
-        <label asp-for="Body" class="form-label"></label> <!-- Label for accessibility -->
-        <textarea asp-for="Body" class="form-control" rows="5"></textarea> <!-- Text area for longer input -->
-        <span asp-validation-for="Body" class="text-danger"></span> <!-- Displays validation messages -->
+        <label asp-for="Body" class="form-label"></label>
+        <textarea asp-for="Body" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Body" class="text-danger"></span>
     </div>
 
     <!-- Input field for uploading an image (optional) -->
     <div class="mb-3">
-        <label asp-for="ImageUpload" class="form-label"></label> <!-- Label for accessibility -->
-        <input asp-for="ImageUpload" type="file" class="form-control" /> <!-- File input for images -->
-        <span asp-validation-for="ImageUpload" class="text-danger"></span> <!-- Displays validation messages -->
+        <label asp-for="ImageUpload" class="form-label"></label>
+        <input asp-for="ImageUpload" type="file" class="form-control" />
+        <span asp-validation-for="ImageUpload" class="text-danger"></span>
     </div>
 
-    <!-- Submit button to create the post -->
     <button type="submit" class="btn btn-primary">Submit Post</button>
 </form>
 
-<!-- Scripts section for validation (ensures client-side validation works) -->
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CatForum.Data;
 using Microsoft.AspNetCore.Http;
 
 namespace CatForum.Models
@@ -30,13 +31,13 @@ namespace CatForum.Models
         // Automatically sets the timestamp when a post is created
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // Collection to hold replies associated with this post (optional)
-        public ICollection<Reply>? Replies { get; set; }
+        // Collection to hold replies associated with this post
+        public ICollection<Reply> Replies { get; set; } = new List<Reply>();
 
-        public string? UserId { get; set; } 
+        // Foreign key for ApplicationUser
+        public string UserId { get; set; } = string.Empty;
 
         [ForeignKey("UserId")]
         public ApplicationUser? ApplicationUser { get; set; }
-
     }
 }

@@ -1,35 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CatForum.Models;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using CatForum.Models;
 
 namespace CatForum.Data
 {
-    // DbContext class that represents the database connection and tables for the CatForum application
     public class CatForumContext : IdentityDbContext<ApplicationUser>
     {
-        // Constructor that takes DbContextOptions and passes it to the base class
         public CatForumContext(DbContextOptions<CatForumContext> options) : base(options) { }
 
-        // DbSet represents the Posts table in the database
+        // Define the database tables
         public DbSet<Post> Posts { get; set; }
-
-        // DbSet represents the Replies table in the database
         public DbSet<Reply> Replies { get; set; }
 
-        // This property seems to represent Photos, but it’s not a DbSet
-        // If this is meant to store uploaded images, consider defining a Photo model and using DbSet Photo
-        public object Photos { get; internal set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // Ensure the Post model correctly maps to the database
+            modelBuilder.Entity<Post>()
+                .HasKey(p => p.PostId); // Ensure PostId is the primary key
+
+            modelBuilder.Entity<Post>()
+                .Property(p => p.PostId)
+                .HasColumnName("PostId"); // Ensures the database uses "PostId" and not "Id"
+
+            // Define foreign key relationship between Posts and Users
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.ApplicationUser)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.UserId) 
                 .OnDelete(DeleteBehavior.Cascade);
         }
-
     }
 }
