@@ -22,7 +22,7 @@ namespace CatForum.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CatForum.Models.ApplicationUser", b =>
+            modelBuilder.Entity("CatForum.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -102,13 +102,10 @@ namespace CatForum.Migrations
                 {
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PostId");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -125,6 +122,7 @@ namespace CatForum.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PostId");
@@ -298,10 +296,11 @@ namespace CatForum.Migrations
 
             modelBuilder.Entity("CatForum.Models.Post", b =>
                 {
-                    b.HasOne("CatForum.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("CatForum.Data.ApplicationUser", "ApplicationUser")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
                 });
@@ -328,7 +327,7 @@ namespace CatForum.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("CatForum.Models.ApplicationUser", null)
+                    b.HasOne("CatForum.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -337,7 +336,7 @@ namespace CatForum.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CatForum.Models.ApplicationUser", null)
+                    b.HasOne("CatForum.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -352,7 +351,7 @@ namespace CatForum.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CatForum.Models.ApplicationUser", null)
+                    b.HasOne("CatForum.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -361,14 +360,14 @@ namespace CatForum.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("CatForum.Models.ApplicationUser", null)
+                    b.HasOne("CatForum.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CatForum.Models.ApplicationUser", b =>
+            modelBuilder.Entity("CatForum.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Posts");
                 });

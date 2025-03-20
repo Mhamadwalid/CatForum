@@ -57,7 +57,7 @@ namespace CatForum.Controllers
             post.CreatedAt = DateTime.Now;
 
             if (post.ImageUpload != null && post.ImageUpload.Length > 0)
-                {
+            {
                 try
                 {
                     string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(post.ImageUpload.FileName);

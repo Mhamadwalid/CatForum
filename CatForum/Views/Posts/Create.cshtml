@@ -1,34 +1,29 @@
 ﻿@model CatForum.Models.Post
 
 @{
-    // Set the page title for the browser tab and heading
     ViewData["Title"] = "New Post";
 }
 
 <h1>Create a New Post</h1>
 <hr />
 
-<!-- Form to create a new post, using POST method and supporting file uploads -->
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<!-- Fix: Ensure the form correctly posts to the PostsController -->
+<form asp-controller="Posts" asp-action="Create" method="post" enctype="multipart/form-data">
 
-    <!-- Display validation errors if any exist -->
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!-- Input field for the post title -->
     <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label> <!-- Label for accessibility -->
-        <input asp-for="Title" class="form-control" /> <!-- User enters the title here -->
-        <span asp-validation-for="Title" class="text-danger"></span> <!-- Displays validation messages -->
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
-    <!-- Input field for the post body (text content) -->
     <div class="mb-3">
         <label asp-for="Body" class="form-label"></label>
         <textarea asp-for="Body" class="form-control" rows="5"></textarea>
         <span asp-validation-for="Body" class="text-danger"></span>
     </div>
 
-    <!-- Input field for uploading an image (optional) -->
     <div class="mb-3">
         <label asp-for="ImageUpload" class="form-label"></label>
         <input asp-for="ImageUpload" type="file" class="form-control" />

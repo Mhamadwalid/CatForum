@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\catimages\" />
+    <Folder Include="wwwroot\uploads\" />
     <Folder Include="wwwroot\profilepics\" />
   </ItemGroup>
 

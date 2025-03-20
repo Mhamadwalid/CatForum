@@ -24,12 +24,13 @@ namespace CatForum.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _context.Posts
-                .Include(p => p.ApplicationUser) 
+                .Include(p => p.ApplicationUser)
                 .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
 
             return View(posts);
         }
+
 
         // GET: /Home/Details/5
         // Displays a specific post along with its replies.

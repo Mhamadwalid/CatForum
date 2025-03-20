@@ -29,7 +29,7 @@ namespace CatForum.Data
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.ApplicationUser)
                 .WithMany(u => u.Posts)
-                .HasForeignKey(p => p.UserId) 
+                .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
